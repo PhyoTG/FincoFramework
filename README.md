@@ -4,7 +4,6 @@ FincoFramework for Academic Project
 Team #2
 
 Members- Phyo Theingi
-
        - Khin Myo Wai
 
 Framework Name - Finco
