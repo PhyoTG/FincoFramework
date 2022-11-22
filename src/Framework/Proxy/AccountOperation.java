@@ -13,19 +13,6 @@ public class AccountOperation implements AccountService{
 		case "Withdrawl":
 			
 			break;
-		case "AddInterest":
-			
-			break;
-		case "AddEntry":
-			
-			break;
-		case "GetCurrentBalance":
-			
-			break;
-		case "GenerateReport":
-			
-			break;
-
 		default:
 			break;
 		}
