@@ -1,12 +1,9 @@
 package Bank.View;
 
-import javax.security.auth.Refreshable;
 import javax.swing.UIManager;
 
 import Framework.View.FincoController;
 import Framework.View.FincoFramework;
-import Framework.View.JDialog_AddCompAcc;
-import Framework.View.JDialog_AddPAcc;
 
 public class BankView extends FincoFramework{
 	
