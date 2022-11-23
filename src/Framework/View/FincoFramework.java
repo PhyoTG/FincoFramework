@@ -202,7 +202,7 @@ public class FincoFramework extends javax.swing.JFrame
 		System.exit(0);
 	}
 
-	void JButtonPerAC_actionPerformed(java.awt.event.ActionEvent event)
+	public void JButtonPerAC_actionPerformed(java.awt.event.ActionEvent event)
 	{
 		/*
 		 JDialog_AddPAcc type object is for adding personal information
@@ -213,14 +213,14 @@ public class FincoFramework extends javax.swing.JFrame
 		JDialog_AddPAcc pac = new JDialog_AddPAcc(myframe);
 		pac.setBounds(450, 20, 300, 330);
 		pac.show();
-		refreshTable();
+		refreshTable(this.viewController.getAccounts());
             
     }
 
-	private void refreshTable() {
+	public void refreshTable(Collection<Account> aa) {
 		DefaultTableModel dtm = (DefaultTableModel) JTable1.getModel();
 		dtm.setRowCount(0);
-		Collection<Account> accounts = this.viewController.getAccounts();
+		Collection<Account> accounts = aa;
 		for (Account account : accounts) {
 			Object[] row = new Object[8];
 			row[0] = account.getAccountNumber();
@@ -243,7 +243,7 @@ public class FincoFramework extends javax.swing.JFrame
 	}
 
 
-	void JButtonCompAC_actionPerformed(java.awt.event.ActionEvent event)
+	public void JButtonCompAC_actionPerformed(java.awt.event.ActionEvent event)
 	{
 		/*
 		 construct a JDialog_AddCompAcc type object 
@@ -254,7 +254,7 @@ public class FincoFramework extends javax.swing.JFrame
 		JDialog_AddCompAcc pac = new JDialog_AddCompAcc(myframe);
 		pac.setBounds(450, 20, 300, 330);
 		pac.show();
-		refreshTable();
+		refreshTable(this.viewController.getAccounts());
 
 	}
 
@@ -275,7 +275,7 @@ public class FincoFramework extends javax.swing.JFrame
 //            Double samount = (Double)model.getValueAt(selection, 5);
 //		    long newamount=(long) (samount+deposit);
 //		    model.setValueAt(String.valueOf(newamount),selection, 5);
-		    refreshTable();
+		    refreshTable(this.viewController.getAccounts());
 		}
 		
 		
@@ -302,7 +302,7 @@ public class FincoFramework extends javax.swing.JFrame
 //		    if (newamount <0){
 //		       JOptionPane.showMessageDialog(JButton_Withdraw, " Account "+accnr+" : balance is negative: $"+String.valueOf(newamount)+" !","Warning: negative balance",JOptionPane.WARNING_MESSAGE);
 //		    }
-		    refreshTable();
+		    refreshTable(this.viewController.getAccounts());
 		}
 		
 		

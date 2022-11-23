@@ -19,12 +19,52 @@ public class Finco {
     public Collection<Customer> customers = new ArrayList<>();
     public IDatabase db = new Database();
     
-    private void finco() {
-		loadData();
+    public Finco() {
+		//loadData();
 	}
 
-	private void loadData() {
-		
+	public void loadData() {
+		JSONObject jsonObject = this.db.read("");
+		JSONArray arr = (JSONArray) jsonObject.get("customers");
+		for (int i = 0; i < arr.size(); i++) {
+			JSONObject obj = (JSONObject) arr.get(i);
+			Customer customer;
+
+			if (obj.get("type").equals("company")) {
+				customer = new Company((String) obj.get("name"),
+									   (String) obj.get("street"),
+									   (String) obj.get("city"),
+									   (String) obj.get("state"),
+									   Integer.parseInt(obj.get("zip").toString()),
+									   (String) obj.get("email"),
+									   (String) obj.get("noEmployees"));
+			} else {
+				customer = new Person((String) obj.get("name"),
+									  (String) obj.get("street"),
+									  (String) obj.get("city"),
+									  (String) obj.get("state"),
+									  Integer.parseInt(obj.get("zip").toString()),
+									  (String) obj.get("email"),
+									  (String) obj.get("birthDate"));
+			}
+
+			this.customers.add(customer);
+			JSONArray accList = (JSONArray) obj.get("accounts");
+			for (int j = 0; j < accList.size(); j++) {
+				JSONObject o = (JSONObject) accList.get(i);
+
+	            Account a = new Account(
+	                (String) o.get("accountNum"),
+	                customer,
+	                (String) o.get("acctype")
+	            );			
+
+				a.setCurrentAmount(Double.parseDouble(o.get("currentBalance").toString()));
+				customer.addAccount(a);
+				
+				this.accounts.add(a);
+			}
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -55,19 +95,13 @@ public class Finco {
 				a.put("accountNum", account.getAccountNumber());
 				a.put("currentBalance", account.getCurrentAmount());
 
-//				for (Entry entry : account.getEntryList()) {
-//					JSONObject e = new JSONObject();
-//
-//					e.put("amount", entry.getAmount());
-//					e.put("date", entry.getDate().toString());
-//					if (entry instanceof DepositEntry) {
-//						e.put("type", "deposit");
-//					} else {
-//						e.put("type", "withdraw");
-//					}
-//
-//					entries.add(e);
-//				}
+				for (Entry entry : account.getEntryList()) {
+					JSONObject e = new JSONObject();
+
+					e.put("amount", entry.getAmount());
+					e.put("date", entry.getDate().toString());
+					entries.add(e);
+				}
 
 				a.put("entries", entries);
 				accs.add(a);
