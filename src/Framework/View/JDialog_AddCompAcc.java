@@ -7,6 +7,8 @@ import javax.swing.*;
 public class JDialog_AddCompAcc extends javax.swing.JDialog
 {
     private FincoFramework parentframe;
+    private FincoController fincoController = new FincoViewController();
+
     
 	public JDialog_AddCompAcc(FincoFramework parent)
 	{
@@ -147,6 +149,20 @@ public class JDialog_AddCompAcc extends javax.swing.JDialog
            else
            parentframe.accountType="S";
 	   parentframe.newaccount=true;
+	   
+	   	String accNo = JTextField_ACNR.getText();
+		String name = JTextField_NAME.getText();
+		String street = JTextField_STR.getText();
+		String city = JTextField_CT.getText();
+		int zip = Integer.parseInt(JTextField_ZIP.getText());
+		String state = JTextField_ST.getText();
+		String mail = JTextField_EM.getText();
+		String empNum = JTextField_NoOfEmp.getText();
+		String accountType = "S";
+		if (JRadioButton_Chk.isSelected())
+         accountType="Ch";
+		fincoController.addCompanyAccount(accNo,name,street,city,state,zip,mail,empNum,accountType);
+	   
 	   dispose();
 			 
 	}

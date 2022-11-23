@@ -5,6 +5,7 @@ import java.util.Collection;
 import Framework.Account.Account;
 import Framework.Account.Entry;
 import Framework.Customer.Customer;
+import Framework.Operation.AddCompanyAccountOperation;
 import Framework.Operation.AddPersonalAccountOperation;
 import Framework.Operation.OperationManager;
 
@@ -26,7 +27,11 @@ public class FincoViewController implements FincoController {
 	public Customer addCompanyAccount(String accountNum, String name, String street, String city, String state,
 			Integer zip, String email, String noEmployees, String acctype) {
 		// TODO Auto-generated method stub
-		return null;
+		AddCompanyAccountOperation addCompany = new AddCompanyAccountOperation(name, street, city, state, zip, email,noEmployees,acctype,null);
+		Ops.submit(addCompany);
+		
+		this.createAccount(addCompany.getCustomer(),accountNum, acctype);
+		return addCompany.getCustomer();
 	}
 
 	@Override
@@ -34,7 +39,7 @@ public class FincoViewController implements FincoController {
 		Account account = new Account(accountNum, customer, accType);
 
         customer.addAccount(account);
-        this.getAccounts().add(account);
+//        this.getAccounts().add(account);
 
         return account;
 	}
