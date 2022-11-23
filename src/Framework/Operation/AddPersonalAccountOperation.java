@@ -3,6 +3,7 @@ package Framework.Operation;
 import Framework.Finco;
 import Framework.Customer.Customer;
 import Framework.Customer.Person;
+import Framework.DB.Database;
 
 public class AddPersonalAccountOperation implements Operation{
 
@@ -41,7 +42,9 @@ public class AddPersonalAccountOperation implements Operation{
 	public void execute() {
 		setCustomer(new Person(name, street, city, state, zip, email,birthDate));
 		System.out.println(this.customer.getName());
+		this.finCo.customers.add(this.customer);
 		// add to database ... 
+		this.finCo.writeData();
 	}
 
 	@Override

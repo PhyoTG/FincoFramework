@@ -2,6 +2,7 @@ package Framework.View;
 
 import java.util.Collection;
 
+import Framework.Finco;
 import Framework.Account.Account;
 import Framework.Account.Entry;
 import Framework.Customer.Customer;
@@ -14,11 +15,12 @@ import Framework.Operation.OperationManager;
 public class FincoViewController implements FincoController {
 
 	public static OperationManager Ops = new OperationManager();
+	public static Finco finco = new Finco();
 	
 	@Override
 	public Customer addPersonAccount(String accountNum, String name, String street, String city, String state,
 			Integer zip, String email, String birthDate, String acctype) {
-		AddPersonalAccountOperation addPerson = new AddPersonalAccountOperation(name, street, city, state, zip, email,birthDate,acctype,null);
+		AddPersonalAccountOperation addPerson = new AddPersonalAccountOperation(name, street, city, state, zip, email,birthDate,acctype,finco);
 		Ops.submit(addPerson);
 		
 		this.createAccount(addPerson.getCustomer(),accountNum, acctype);
@@ -28,8 +30,7 @@ public class FincoViewController implements FincoController {
 	@Override
 	public Customer addCompanyAccount(String accountNum, String name, String street, String city, String state,
 			Integer zip, String email, String noEmployees, String acctype) {
-		// TODO Auto-generated method stub
-		AddCompanyAccountOperation addCompany = new AddCompanyAccountOperation(name, street, city, state, zip, email,noEmployees,acctype,null);
+		AddCompanyAccountOperation addCompany = new AddCompanyAccountOperation(name, street, city, state, zip, email,noEmployees,acctype,finco);
 		Ops.submit(addCompany);
 		
 		this.createAccount(addCompany.getCustomer(),accountNum, acctype);
@@ -41,7 +42,7 @@ public class FincoViewController implements FincoController {
 		Account account = new Account(accountNum, customer, accType);
 
         customer.addAccount(account);
-//        this.getAccounts().add(account);
+        this.getAccounts().add(account);
 
         return account;
 	}
@@ -49,7 +50,7 @@ public class FincoViewController implements FincoController {
 	@Override
 	public Collection<Account> getAccounts() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.finco.accounts;
 	}
 
 	@Override
@@ -70,20 +71,16 @@ public class FincoViewController implements FincoController {
 		
 		AddWithdrawOperation addWithdraw = new AddWithdrawOperation(account, amount);
 		Ops.submit(addWithdraw);
-		
-//		this.createAccount(addDeposit.getCustomer(),accountNum, acctype);
+		this.finco.writeData();
 		return addWithdraw.getEntry();
 		
 	}
 
 	@Override
 	public Entry deposit(Account account, double amount) {
-		// TODO Auto-generated method stub
-		
 		AddDepositOperation addDeposit = new AddDepositOperation(account, amount);
 		Ops.submit(addDeposit);
-		
-//		this.createAccount(addDeposit.getCustomer(),accountNum, acctype);
+		this.finco.writeData();
 		return addDeposit.getEntry();
 		
 	}

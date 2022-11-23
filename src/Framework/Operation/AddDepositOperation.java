@@ -22,8 +22,8 @@ public class AddDepositOperation implements Operation{
 	public void execute() {
 		// TODO Auto-generated method stub
 		setEntry(new Entry(accNo, amount));
+		accNo.setCurrentAmount(accNo.getCurrentAmount() + amount);
 		System.out.println("deposit...." + this.entry.getAmount());
-		
 	}
 
 	@Override

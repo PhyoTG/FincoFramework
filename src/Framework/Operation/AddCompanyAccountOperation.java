@@ -42,8 +42,7 @@ public class AddCompanyAccountOperation implements Operation{
 	public void execute() {
 		setCustomer(new Company(name, street, city, state, zip, email,noOfEmployees));
 		System.out.println(this.customer.getName());
-		// TODO Auto-generated method stub
-		
+		this.finCo.writeData();
 	}
 
 	@Override

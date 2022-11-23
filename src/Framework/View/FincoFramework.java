@@ -1,12 +1,15 @@
 package Framework.View;
 
 import java.awt.BorderLayout;
+import java.util.Collection;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+
+import Framework.Account.Account;
 
 /**
  * A basic JFC based application.
@@ -23,11 +26,12 @@ public class FincoFramework extends javax.swing.JFrame
     private JScrollPane JScrollPane1;
     FincoFramework myframe;
     private Object rowdata[];
+    public FincoController viewController;
     
 	public FincoFramework(String typeOfView)
 	{
 		myframe = this;
-		
+		viewController = new FincoViewController();
 		
 		setTitle( typeOfView +" Application");
 		
@@ -209,23 +213,35 @@ public class FincoFramework extends javax.swing.JFrame
 		JDialog_AddPAcc pac = new JDialog_AddPAcc(myframe);
 		pac.setBounds(450, 20, 300, 330);
 		pac.show();
-
-		if (newaccount){
-            // add row to table
-            rowdata[0] = accountnr;
-            rowdata[1] = clientName;
-            rowdata[2] = city;
-            rowdata[3] = "P";
-            rowdata[4] = accountType;
-            rowdata[5] = "0";
-            model.addRow(rowdata);
-            JTable1.getSelectionModel().setAnchorSelectionIndex(-1);
-            newaccount=false;
-        }
-
-       
-        
+		refreshTable();
+            
     }
+
+	private void refreshTable() {
+		DefaultTableModel dtm = (DefaultTableModel) JTable1.getModel();
+		dtm.setRowCount(0);
+		Collection<Account> accounts = this.viewController.getAccounts();
+		for (Account account : accounts) {
+			Object[] row = new Object[8];
+			row[0] = account.getAccountNumber();
+			row[1] = account.getCust().getName();
+			row[2] = account.getCust().getCity();
+
+			if (account.getCust() instanceof Framework.Customer.Person) {
+				row[3] = 'P';
+			} else {
+				row[3] = 'C';
+			}
+			row[4] = account.getAccType();
+
+			row[5] = account.getCurrentAmount();
+
+			model.addRow(row);
+		}
+
+		JTable1.getSelectionModel().setAnchorSelectionIndex(-1);
+	}
+
 
 	void JButtonCompAC_actionPerformed(java.awt.event.ActionEvent event)
 	{
@@ -238,19 +254,7 @@ public class FincoFramework extends javax.swing.JFrame
 		JDialog_AddCompAcc pac = new JDialog_AddCompAcc(myframe);
 		pac.setBounds(450, 20, 300, 330);
 		pac.show();
-		
-		if (newaccount){
-            // add row to table
-            rowdata[0] = accountnr;
-            rowdata[1] = clientName;
-            rowdata[2] = city;
-            rowdata[3] = "C";
-            rowdata[4] = accountType;
-            rowdata[5] = "0";
-            model.addRow(rowdata);
-            JTable1.getSelectionModel().setAnchorSelectionIndex(-1);
-            newaccount=false;
-        }
+		refreshTable();
 
 	}
 
@@ -267,11 +271,11 @@ public class FincoFramework extends javax.swing.JFrame
 		    dep.show();
     		
 		    // compute new amount
-            long deposit = Long.parseLong(amountDeposit);
-            String samount = (String)model.getValueAt(selection, 5);
-            long currentamount = Long.parseLong(samount);
-		    long newamount=currentamount+deposit;
-		    model.setValueAt(String.valueOf(newamount),selection, 5);
+//            long deposit = Long.parseLong(amountDeposit);
+//            Double samount = (Double)model.getValueAt(selection, 5);
+//		    long newamount=(long) (samount+deposit);
+//		    model.setValueAt(String.valueOf(newamount),selection, 5);
+		    refreshTable();
 		}
 		
 		
@@ -290,14 +294,15 @@ public class FincoFramework extends javax.swing.JFrame
 		    wd.show();
     		
 		    // compute new amount
-            long deposit = Long.parseLong(amountDeposit);
-            String samount = (String)model.getValueAt(selection, 5);
-            long currentamount = Long.parseLong(samount);
-		    long newamount=currentamount-deposit;
-		    model.setValueAt(String.valueOf(newamount),selection, 5);
-		    if (newamount <0){
-		       JOptionPane.showMessageDialog(JButton_Withdraw, " Account "+accnr+" : balance is negative: $"+String.valueOf(newamount)+" !","Warning: negative balance",JOptionPane.WARNING_MESSAGE);
-		    }
+//            long deposit = Long.parseLong(amountDeposit);
+//            double samount = (double)model.getValueAt(selection, 5);
+////            long currentamount = Long.parseLong(samount);
+//		    long newamount=(long) (samount-deposit);
+//		    model.setValueAt(String.valueOf(newamount),selection, 5);
+//		    if (newamount <0){
+//		       JOptionPane.showMessageDialog(JButton_Withdraw, " Account "+accnr+" : balance is negative: $"+String.valueOf(newamount)+" !","Warning: negative balance",JOptionPane.WARNING_MESSAGE);
+//		    }
+		    refreshTable();
 		}
 		
 		

@@ -89,9 +89,12 @@ public class JDialog_Deposit extends javax.swing.JDialog
 	{
         parentframe.amountDeposit=JTextField_Deposit.getText();
         
-//        Account accNo = JTextField_NAME.getText();
-        
-        Account accNo = new Account("11",new Customer("123", "John", "123", "123", 123, "123"),"S");
+        Account accNo = new Account(accnr, null, "S");
+        for (Account acc : fincoController.getAccounts()) {
+			if(acc.getAccountNumber().equals(this.accnr)) {
+				accNo = acc;
+			}
+		}
 		double amount = Double.parseDouble(JTextField_Deposit.getText());
 		fincoController.deposit(accNo,amount);
         dispose();

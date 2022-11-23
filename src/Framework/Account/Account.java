@@ -6,7 +6,7 @@ import java.util.List;
 import Framework.Customer.Customer;
 
 public class Account {
-	private double currentAmount;
+	private double currentAmount = 0;
 	private String accountNumber;
 	private String accType;
 	private Customer cust;
@@ -16,13 +16,14 @@ public class Account {
 		this.accountNumber = num;
 		this.cust = customer;
 		this.accType = acctype;
+		this.currentAmount = 0;
 	}
 	
 	public double getCurrentAmount() {
 		return currentAmount;
 	}
-	public void setCurrentAmount(double currentAmount) {
-		this.currentAmount = currentAmount;
+	public void setCurrentAmount(double d) {
+		this.currentAmount = d;
 	}
 	public Customer getCust() {
 		return cust;
