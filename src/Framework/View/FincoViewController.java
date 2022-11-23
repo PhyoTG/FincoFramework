@@ -6,7 +6,9 @@ import Framework.Account.Account;
 import Framework.Account.Entry;
 import Framework.Customer.Customer;
 import Framework.Operation.AddCompanyAccountOperation;
+import Framework.Operation.AddDepositOperation;
 import Framework.Operation.AddPersonalAccountOperation;
+import Framework.Operation.AddWithdrawOperation;
 import Framework.Operation.OperationManager;
 
 public class FincoViewController implements FincoController {
@@ -65,13 +67,25 @@ public class FincoViewController implements FincoController {
 	@Override
 	public Entry withdraw(Account account, double amount) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		AddWithdrawOperation addWithdraw = new AddWithdrawOperation(account, amount);
+		Ops.submit(addWithdraw);
+		
+//		this.createAccount(addDeposit.getCustomer(),accountNum, acctype);
+		return addWithdraw.getEntry();
+		
 	}
 
 	@Override
 	public Entry deposit(Account account, double amount) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		AddDepositOperation addDeposit = new AddDepositOperation(account, amount);
+		Ops.submit(addDeposit);
+		
+//		this.createAccount(addDeposit.getCustomer(),accountNum, acctype);
+		return addDeposit.getEntry();
+		
 	}
 
 }

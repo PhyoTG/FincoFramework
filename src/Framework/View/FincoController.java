@@ -16,7 +16,7 @@ public interface FincoController {
     Customer addPersonAccount(String accountNum, String name, String street, String city, String state, Integer zip, String email, String birthDate, String acctype);
 
     Customer addCompanyAccount(String accountNum, String name, String street, String city, String state, Integer zip, String email, String noEmployees, String acctype);
-
+    
     Account createAccount(Customer customer, String accountNum, String acctype);
 
     Collection<Account> getAccounts();

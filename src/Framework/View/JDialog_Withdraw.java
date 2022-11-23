@@ -2,6 +2,9 @@ package Framework.View;
 import java.awt.*;
 import javax.swing.*;
 
+import Framework.Account.Account;
+import Framework.Customer.Customer;
+
 
 
 public class JDialog_Withdraw extends javax.swing.JDialog
@@ -9,6 +12,9 @@ public class JDialog_Withdraw extends javax.swing.JDialog
    
     private FincoFramework parentframe;
     private String accnr;
+    
+    private FincoController fincoController = new FincoViewController();
+
 
 	public JDialog_Withdraw(FincoFramework parent, String aaccnr)
 	{
@@ -85,6 +91,11 @@ public class JDialog_Withdraw extends javax.swing.JDialog
 	void JButtonOK_actionPerformed(java.awt.event.ActionEvent event)
 	{
         parentframe.amountDeposit=JTextField_AMT.getText();
+        
+        Account accNo = new Account("11",new Customer("123", "John", "123", "123", 123, "123"),"S");
+		double amount = Double.parseDouble(JTextField_AMT.getText());
+		fincoController.withdraw(accNo,amount);
+        
 		dispose();
 	}
 
