@@ -3,7 +3,6 @@ import java.awt.*;
 import javax.swing.*;
 
 
-
 public class JDialog_AddCompAcc extends javax.swing.JDialog
 {
     private FincoFramework parentframe;
