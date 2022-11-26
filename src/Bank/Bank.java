@@ -1,126 +1,75 @@
 package Bank;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import javax.swing.UIManager;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import Bank.DB.BankAppDatabase;
+import Bank.View.BankController;
+import Bank.View.BankJDialog_AddCompAcc;
+import Bank.View.BankJDialog_AddPAcc;
 import Framework.Finco;
-import Framework.Account.Account;
-import Framework.Account.Entry;
-import Framework.Customer.Company;
-import Framework.Customer.Customer;
-import Framework.Customer.Person;
-import Framework.DB.Database;
-import Framework.DB.IDatabase;
+import Framework.View.IFincoController;
 
 public class Bank extends Finco{
-	public Collection<Account> accounts = new ArrayList<>();
-    public Collection<Customer> customers = new ArrayList<>();
-    public static IDatabase db = new BankAppDatabase();
-    
-    public Bank() {
-    	super();
-		//loadData();
-	}
+	
+	Bank myframe;
+	public IFincoController viewController;
 
-    @Override
-    public void loadData() {
-    	JSONObject jsonObject = this.db.read("./bank-data.json");
-		JSONArray arr = (JSONArray) jsonObject.get("customers");
-		for (int i = 0; i < arr.size(); i++) {
-			JSONObject obj = (JSONObject) arr.get(i);
-			Customer customer;
-
-			if (obj.get("type").equals("company")) {
-				customer = new Company((String) obj.get("name"),
-									   (String) obj.get("street"),
-									   (String) obj.get("city"),
-									   (String) obj.get("state"),
-									   Integer.parseInt(obj.get("zip").toString()),
-									   (String) obj.get("email"),
-									   (String) obj.get("noEmployees"));
-			} else {
-				customer = new Person((String) obj.get("name"),
-									  (String) obj.get("street"),
-									  (String) obj.get("city"),
-									  (String) obj.get("state"),
-									  Integer.parseInt(obj.get("zip").toString()),
-									  (String) obj.get("email"),
-									  (String) obj.get("birthDate"));
-			}
-
-			this.customers.add(customer);
-			JSONArray accList = (JSONArray) obj.get("accounts");
-			for (int j = 0; j < accList.size(); j++) {
-				JSONObject o = (JSONObject) accList.get(i);
-
-	            Account a = new Account(
-	                (String) o.get("accountNum"),
-	                customer,
-	                (String) o.get("acctype")
-	            );			
-
-				a.setCurrentAmount(Double.parseDouble(o.get("currentBalance").toString()));
-				customer.addAccount(a);
-				
-				this.accounts.add(a);
-			}
-		}
-		
+	public Bank(String typeOfView) {
+		super(typeOfView);
+		myframe = this;
+		viewController  = new BankController();
 	}
 	
-    @Override
-	@SuppressWarnings("unchecked")
-	public void writeData() {
-		System.out.println("");
-		System.out.println("Entering App level");
-		JSONObject jsonObject = new JSONObject();
-		JSONArray customers = new JSONArray();
-
-		for (Customer customer : this.customers) {
-			JSONObject c = new JSONObject();
-			JSONArray accs = new JSONArray();
-
-			c.put("name", customer.getName());
-			c.put("city", customer.getCity());
-			c.put("email", customer.getEmail());
-			c.put("state", customer.getState());
-			c.put("street", customer.getStreet());
-			c.put("zip", customer.getZip());
-			
-			if(customer.getClass().equals(Company.class))
-					c.put("type", "company");
-			else if(customer.getClass().equals(Person.class))
-				c.put("type", "person");
-
-			for (Account account : this.accounts) {
-				JSONObject a = new JSONObject();
-				JSONArray entries = new JSONArray();
-
-				a.put("accountNum", account.getAccountNumber());
-				a.put("currentBalance", account.getCurrentAmount());
-
-				for (Entry entry : account.getEntryList()) {
-					JSONObject e = new JSONObject();
-
-					e.put("amount", entry.getAmount());
-					e.put("date", entry.getDate().toString());
-					entries.add(e);
-				}
-
-				a.put("entries", entries);
-				accs.add(a);
-			}
-
-			c.put("accounts", accs);
-			customers.add(c);
+	static public void main(String args[])
+	{
+		try {
+		    // Add the following code if you want the Look and Feel
+		    // to be set to the Look and Feel of the native system.
+		    
+		    try {
+		        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		    } 
+		    catch (Exception e) { 
+		    }
+		    
+			//Create a new instance of our application's frame, and make it visible.
+			(new Bank("Bank ")).setVisible(true);
+		} 
+		catch (Throwable t) {
+			t.printStackTrace();
+			//Ensure the application exits with an error condition.
+			System.exit(1);
 		}
-
-		jsonObject.put("customers", customers);
-
-		this.db.write("./bank-data.json", jsonObject);
 	}
+	
+	@Override
+	public void JButtonPerAC_actionPerformed(java.awt.event.ActionEvent event)
+	{
+		/*
+		 JDialog_AddPAcc type object is for adding personal information
+		 construct a JDialog_AddPAcc type object 
+		 set the boundaries and show it 
+		*/
+		
+		BankJDialog_AddPAcc pac = new BankJDialog_AddPAcc(myframe);
+		pac.setBounds(450, 20, 300, 330);
+		pac.show();
+        super.refreshTable(this.viewController.getAccounts());
+    }
+	
+	@Override
+	public void JButtonCompAC_actionPerformed(java.awt.event.ActionEvent event)
+	{
+		/*
+		 construct a JDialog_AddCompAcc type object 
+		 set the boundaries and 
+		 show it 
+		*/
+		
+		BankJDialog_AddCompAcc pac = new BankJDialog_AddCompAcc(myframe);
+		pac.setBounds(450, 20, 300, 330);
+		pac.show();
+		super.refreshTable(this.viewController.getAccounts());
+
+	}
+
 }

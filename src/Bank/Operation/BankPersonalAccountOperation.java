@@ -1,7 +1,7 @@
 package Bank.Operation;
 
-import Bank.Bank;
-import Framework.Finco;
+import Bank.BankDataManager;
+import Framework.DataManager;
 import Framework.Customer.Customer;
 import Framework.Customer.Person;
 import Framework.DB.Database;
@@ -18,7 +18,7 @@ public class BankPersonalAccountOperation implements Operation{
     private Customer customer;
     private String birthDate;
     private String accountType;
-    private Bank bank;
+    private BankDataManager bank;
 
     public BankPersonalAccountOperation(String name,
                               String street,
@@ -28,7 +28,7 @@ public class BankPersonalAccountOperation implements Operation{
                               String email,
                               String birthDate,
                               String acctype,
-                              Bank bank) {
+                              BankDataManager bank) {
         this.name = name;
         this.street = street;
         this.city = city;
@@ -44,7 +44,7 @@ public class BankPersonalAccountOperation implements Operation{
 	public void execute() {
 		setCustomer(new Person(name, street, city, state, zip, email,birthDate));
 		System.out.println(this.customer.getName());
-		this.bank.customers.add(this.customer);
+		this.bank.customersList.add(this.customer);
 		// add to database ... 
 		this.bank.writeData();
 	}

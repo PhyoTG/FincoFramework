@@ -1,4 +1,4 @@
-package Bank.DB;
+package CreditCard.DB;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -8,12 +8,12 @@ import org.json.simple.parser.JSONParser;
 
 import Framework.DB.IDatabase;
 
-public class BankAppDatabase implements IDatabase {
+public class CreditCardAppDatabase implements IDatabase {
 	
 	String path = "./bank-data.json";
 	
-	public BankAppDatabase(){
-		this.path = "./bank-data.json";
+	public CreditCardAppDatabase(){
+		this.path = "./credit-data.json";
 	}
 	
 	@Override
@@ -22,7 +22,7 @@ public class BankAppDatabase implements IDatabase {
 		if (path == null) {
             path = "./data.json";
         }
-        System.out.println("Coming Bank APP Database");
+        System.out.println("Coming Credit APP Database");
         System.out.println(jsonObject);
         System.out.println(path);
         try {

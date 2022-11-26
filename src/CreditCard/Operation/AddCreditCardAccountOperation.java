@@ -1,12 +1,11 @@
-package Bank.Operation;
+package CreditCard.Operation;
 
-import Bank.BankDataManager;
-import Framework.DataManager;
+import CreditCard.CreditCardDataManager;
 import Framework.Customer.Company;
 import Framework.Customer.Customer;
 import Framework.Operation.Operation;
 
-public class BankCompanyAccountOperation implements Operation{
+public class AddCreditCardAccountOperation implements Operation{
 	
 	private String name;
     private String street;
@@ -17,17 +16,16 @@ public class BankCompanyAccountOperation implements Operation{
     private Customer customer;
     private String noOfEmployees;
     private String accountType;
-    private BankDataManager bank;
+    private CreditCardDataManager credit;
     
-	public BankCompanyAccountOperation(String name,
+	public AddCreditCardAccountOperation(String name,
 		            String street,
 		            String city,
-		            String state,
 		            Integer zip,
 		            String email,
 		            String noOfEmployees,
 		            String acctype,
-		            BankDataManager bank) {
+		            CreditCardDataManager credit) {
 		this.name = name;
 		this.street = street;
 		this.city = city;
@@ -36,14 +34,14 @@ public class BankCompanyAccountOperation implements Operation{
 		this.email = email;
 		this.noOfEmployees = noOfEmployees;
 		this.accountType = acctype;
-		this.bank = bank;
+		this.credit = credit;
 		}
 
 	@Override
 	public void execute() {
 		setCustomer(new Company(name, street, city, state, zip, email,noOfEmployees));
 		System.out.println(this.customer.getName());
-		this.bank.writeData();
+		this.credit.writeData();
 	}
 
 	@Override

@@ -1,26 +1,30 @@
-package Framework.View;
+package Bank.View;
 
 import java.util.Collection;
 
-import Framework.Finco;
+import Bank.BankDataManager;
+import Bank.Operation.BankCompanyAccountOperation;
 import Framework.Account.Account;
 import Framework.Account.Entry;
 import Framework.Customer.Customer;
-import Framework.Operation.AddCompanyAccountOperation;
 import Framework.Operation.AddDepositOperation;
 import Framework.Operation.AddPersonalAccountOperation;
 import Framework.Operation.AddWithdrawOperation;
-import Framework.Operation.OperationManager;
+import Framework.View.IFincoController;
+import Framework.View.FincoController;
 
-public class FincoViewController implements FincoController {
-
-	public static OperationManager Ops = new OperationManager();
-	public static Finco finco = new Finco();
+public class BankController extends FincoController implements IFincoController{
 	
+	public static BankDataManager bank = new BankDataManager();
+	
+    public BankController() {
+        super();
+    }
+
 	@Override
 	public Customer addPersonAccount(String accountNum, String name, String street, String city, String state,
 			Integer zip, String email, String birthDate, String acctype) {
-		AddPersonalAccountOperation addPerson = new AddPersonalAccountOperation(name, street, city, state, zip, email,birthDate,acctype,finco);
+		AddPersonalAccountOperation addPerson = new AddPersonalAccountOperation(name, street, city, state, zip, email,birthDate,acctype,bank);
 		Ops.submit(addPerson);
 		
 		this.createAccount(addPerson.getCustomer(),accountNum, acctype);
@@ -30,7 +34,7 @@ public class FincoViewController implements FincoController {
 	@Override
 	public Customer addCompanyAccount(String accountNum, String name, String street, String city, String state,
 			Integer zip, String email, String noEmployees, String acctype) {
-		AddCompanyAccountOperation addCompany = new AddCompanyAccountOperation(name, street, city, state, zip, email,noEmployees,acctype,finco);
+		BankCompanyAccountOperation addCompany = new BankCompanyAccountOperation(name, street, city, state, zip, email,noEmployees,acctype,bank);
 		Ops.submit(addCompany);
 		
 		this.createAccount(addCompany.getCustomer(),accountNum, acctype);
@@ -38,8 +42,8 @@ public class FincoViewController implements FincoController {
 	}
 
 	@Override
-	public Account createAccount(Customer customer, String accountNum, String accType) {
-		Account account = new Account(accountNum, customer, accType);
+	public Account createAccount(Customer customer, String accountNum, String acctype) {
+		Account account = new Account(accountNum, customer, acctype);
 
         customer.addAccount(account);
         this.getAccounts().add(account);
@@ -50,7 +54,7 @@ public class FincoViewController implements FincoController {
 	@Override
 	public Collection<Account> getAccounts() {
 		// TODO Auto-generated method stub
-		return this.finco.accounts;
+		return this.bank.accountsList;
 	}
 
 	@Override
@@ -68,21 +72,17 @@ public class FincoViewController implements FincoController {
 	@Override
 	public Entry withdraw(Account account, double amount) {
 		// TODO Auto-generated method stub
-		
 		AddWithdrawOperation addWithdraw = new AddWithdrawOperation(account, amount);
 		Ops.submit(addWithdraw);
-		this.finco.writeData();
+		this.bank.writeData();
 		return addWithdraw.getEntry();
-		
 	}
 
 	@Override
 	public Entry deposit(Account account, double amount) {
 		AddDepositOperation addDeposit = new AddDepositOperation(account, amount);
 		Ops.submit(addDeposit);
-		this.finco.writeData();
+		this.bank.writeData();
 		return addDeposit.getEntry();
-		
 	}
-
 }

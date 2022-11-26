@@ -2,19 +2,19 @@ package Bank.View;
 
 import javax.swing.*;
 
+import Framework.View.IFincoController;
+import Framework.Finco;
 import Framework.View.FincoController;
-import Framework.View.FincoFramework;
-import Framework.View.FincoViewController;
 
 import java.awt.*;
 
 
 public class BankJDialog_AddCompAcc extends JDialog
 {
-	 private FincoFramework parentframe;
-	 private FincoController bankController = new BankViewController();
+	 private Finco parentframe;
+	 private IFincoController bankController = new BankController();
 
-		public BankJDialog_AddCompAcc(FincoFramework parent)
+		public BankJDialog_AddCompAcc(Finco parent)
 		{
 			super(parent);
 			parentframe=parent;

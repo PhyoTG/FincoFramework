@@ -1,6 +1,6 @@
 package Framework.Operation;
 
-import Framework.Finco;
+import Framework.DataManager;
 import Framework.Customer.Company;
 import Framework.Customer.Customer;
 import Framework.Customer.Person;
@@ -16,7 +16,7 @@ public class AddCompanyAccountOperation implements Operation{
     private Customer customer;
     private String noOfEmployees;
     private String accountType;
-    private Finco finCo;
+    private DataManager finCo;
     
 	public AddCompanyAccountOperation(String name,
 		            String street,
@@ -26,7 +26,7 @@ public class AddCompanyAccountOperation implements Operation{
 		            String email,
 		            String noOfEmployees,
 		            String acctype,
-		            Finco finCo) {
+		            DataManager finCo) {
 		this.name = name;
 		this.street = street;
 		this.city = city;

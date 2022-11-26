@@ -2,6 +2,7 @@ package Framework.View;
 import java.awt.*;
 import javax.swing.*;
 
+import Framework.Finco;
 import Framework.Account.Account;
 import Framework.Customer.Customer;
 
@@ -10,13 +11,13 @@ import Framework.Customer.Customer;
 public class JDialog_Withdraw extends javax.swing.JDialog
 {
    
-    private FincoFramework parentframe;
+    private Finco parentframe;
     private String accnr;
     
-    private FincoController fincoController = new FincoViewController();
+    private IFincoController fincoController = new FincoController();
 
 
-	public JDialog_Withdraw(FincoFramework parent, String aaccnr)
+	public JDialog_Withdraw(Finco parent, String aaccnr)
 	{
 		super(parent);
 		parentframe=parent;
